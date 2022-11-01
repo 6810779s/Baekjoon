@@ -22,20 +22,18 @@ def checkDir(x, y):
 
 
 def calCost(x, y):
-    global total
+    total = 0
     for i in range(len(dx)):
         nx = x+dx[i]
         ny = y+dy[i]
         total += arr[nx][ny]
         visited[nx][ny] = True
-
-
+    return total
 res = inf
-total = 0
 
 
-def dfs(cnt):
-    global res, total
+def dfs(cnt, total):
+    global res
     if cnt == 3:
         res = min(res, total)
         return res
@@ -43,14 +41,12 @@ def dfs(cnt):
     for i in range(1, N-1):
         for j in range(1, N-1):
             if checkDir(i, j):
-                calCost(i, j)
-                dfs(cnt+1)
+                dfs(cnt+1, total+calCost(i, j))
                 for k in range(len(dx)):
                     nx = i+dx[k]
                     ny = j+dy[k]
                     visited[nx][ny] = False
-                    total -= arr[nx][ny]
 
 
-dfs(0)
+dfs(0, 0)
 print(res)
