@@ -18,17 +18,16 @@ def bfs(x):
     visited[x] = 1
     while queue:
         y = queue.popleft()
-
+        if visited[y] == k+1:
+            res.append(y)
+            continue
         for i in graph[y]:
             if visited[i] == 0:
                 queue.append(i)
                 visited[i] = visited[y]+1
-                if visited[i] == k+1:
-                    res.append(i)
 
 
 bfs(x)
-
 if len(res) == 0:
     print(-1)
 else:
