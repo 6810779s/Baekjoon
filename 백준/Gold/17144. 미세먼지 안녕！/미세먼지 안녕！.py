@@ -27,62 +27,55 @@ def clean():
                     nx = i+a
                     ny = j+b
 
-                    if 0 <= nx < r and 0 <= ny < c:
-                        if arr[nx][ny] != -1:
-                            arr_copy[nx][ny] += arr[i][j]//5
-                            cnt += 1
+                    if 0 <= nx < r and 0 <= ny < c and arr[nx][ny] != -1:
+                        arr_copy[nx][ny] += arr[i][j]//5
+                        cnt += 1
 
                 arr_copy[i][j] = arr_copy[i][j] + \
                     arr[i][j]-(arr[i][j]//5*cnt)
             elif arr[i][j] == -1:
                 arr_copy[i][j] = -1
-    arr = arr_copy
+    arr = arr_copy[:]
 
 
 def activeTop():
     global arr, topStartIdx
-
-    # top
+    dn = [(0, 1), (-1, 0), (0, -1), (1, 0)]
+    pre_num = 0
     i = topStartIdx
     j = 0
-    pre_num = 0
-
+    n = 0
     while True:
-
-        if i == topStartIdx and j != c-1:
-            j += 1
-        elif 0 < i <= topStartIdx and j == c-1:
-            i -= 1
-        elif i == 0 and j != 0:
-            j -= 1
-        elif 0 <= i < topStartIdx and j == 0:
-            i += 1
-        pre_num, arr[i][j] = arr[i][j], pre_num
-        if i == topStartIdx and j == 0:
-            arr[i][j] = -1
+        dx = i+dn[n][0]
+        dy = j+dn[n][1]
+        if dx == topStartIdx and dy == 0:
             break
+        if dx < 0 or dx > r-1 or dy < 0 or dy > c-1:
+            n += 1
+            continue
+        pre_num, arr[dx][dy] = arr[dx][dy], pre_num
+        i = dx
+        j = dy
 
 
 def activeBottom():
     global arr, bottomStartIdx
-    # bottom
+    dn = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    pre_num = 0
     i = bottomStartIdx
     j = 0
-    pre_num = 0
+    n = 0
     while True:
-        if i == bottomStartIdx and j != c-1:
-            j += 1
-        elif bottomStartIdx <= i < r-1 and j == c-1:
-            i += 1
-        elif i == r-1 and j != 0:
-            j -= 1
-        elif bottomStartIdx < i <= r-1 and j == 0:
-            i -= 1
-
-        pre_num, arr[i][j] = arr[i][j], pre_num
-        if i == bottomStartIdx and j == 0:
-            arr[i][j] = -1
+        dx = i+dn[n][0]
+        dy = j+dn[n][1]
+        if dx == bottomStartIdx and dy == 0:
             break
+        if dx < 0 or dx > r-1 or dy < 0 or dy > c-1:
+            n += 1
+            continue
+        pre_num, arr[dx][dy] = arr[dx][dy], pre_num
+        i = dx
+        j = dy
 
 
 total = 0
