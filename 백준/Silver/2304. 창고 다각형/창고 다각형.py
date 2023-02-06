@@ -11,7 +11,7 @@ for i in range(n):
 lst.sort()
 total = 0
 while lst:
-    min_height = 1e4+1
+    min_height = 1e3+1
     idx = 0
     for i in range(len(lst)):
         if min_height > lst[i][2]:
