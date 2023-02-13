@@ -5,7 +5,8 @@ for i in range(n):
     s, t = map(int, input().split())
     lst.append((s, t))
 lst.sort(key=lambda x: x[0])
-meeting = [lst[0][1]]
+meeting = []
+heapq.heappush(meeting, lst[0][1])
 
 for i in range(1, n):
     if lst[i][0] >= meeting[0]:
