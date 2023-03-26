@@ -1,44 +1,39 @@
 import sys
+input=sys.stdin.readline
+n,k=map(int,input().split())
 
-n, k = map(int, input().split())
+answer=0
+words = [set(input().strip()) for _ in range(n)]
 
-if k < 5:
-    print(0)
-    exit()
-elif k == 26:
-    print(n)
-    exit()
+alpha=[0]*26
+for i in ("a","n","t","i","c"):
+    alpha[ord(i)-ord("a")]=1
 
-answer = 0
-words = [set(sys.stdin.readline().rstrip()) for _ in range(n)]
-learn = [0] * 26
-
-for c in ('a', 'c', 'i', 'n', 't'):
-    learn[ord(c) - ord('a')] = 1
-
-
-def dfs(idx, cnt):
+def dfs(idx,cnt):
     global answer
-
-    if cnt == k - 5:
-        readcnt = 0
+    if k-5<0:
+        return 0
+    elif k==26:
+        answer=n
+        return n
+    if cnt==k-5:
+        readword=0
         for word in words:
-            check = True
+            check=True
             for w in word:
-                if not learn[ord(w) - ord('a')]:
-                    check = False
+                if alpha[ord(w)-ord("a")]==0:
+                    check=False
                     break
             if check:
-                readcnt += 1
-        answer = max(answer, readcnt)
-        return
+                readword+=1
+        answer = max(answer,readword)
+        return 
 
-    for i in range(idx, 26):
-        if not learn[i]:
-            learn[i] = True
-            dfs(i, cnt + 1)
-            learn[i] = False
+    for i in range(idx,26):
+        if not alpha[i]:
+            alpha[i]=1
+            dfs(i,cnt+1)
+            alpha[i]=0
 
-
-dfs(0, 0)
+dfs(0,0)
 print(answer)
