@@ -1,5 +1,7 @@
 from itertools import combinations
+import sys
 
+input = sys.stdin.readline
 N,M = map(int, input().split())
 board = []
 home=[]
