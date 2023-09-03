@@ -56,8 +56,7 @@ def check_blue_again(row, col, d):
 
 # 다음 칸으로 이동시키는 함수
 def next_horse(row, col, d):
-    nx = row + dx[d]
-    ny = col + dy[d]
+    nx, ny = row + dx[d], col + dy[d]
 
     # 다음 칸이 판을 벗어나는 경우 or 파란칸
     if nx < 0 or ny < 0 or nx >= N or ny >= N or board[nx][ny] == 2:
@@ -72,9 +71,9 @@ def next_horse(row, col, d):
     # 다음 칸이 빨강칸
     elif board[nx][ny] == 1:
         # 말 반대로 바꿔줌
-        rev_horses = white_board[row][col][::-1]
+        rev_horse_list = white_board[row][col][::-1]
         # 말들 차례로 다음 칸에 올림
-        for horse in rev_horses:
+        for horse in rev_horse_list:
             white_board[nx][ny].append(horse)
             # 말들 정보 갱신
             row, col, h_d = info[horse]
@@ -84,11 +83,11 @@ def next_horse(row, col, d):
     # 다음 칸이 흰칸
     elif board[nx][ny] == 0:
         # 말들 차례로 다음 칸에 올림
-        for value in white_board[row][col]:
-            white_board[nx][ny].append(value)
+        for horse in white_board[row][col]:
+            white_board[nx][ny].append(horse)
             # 말들 정보 갱신
-            row, col, h_d = info[value]
-            info[value] = [nx, ny, h_d]
+            row, col, h_d = info[horse]
+            info[horse] = [nx, ny, h_d]
         # 이전 칸에 있던 말을 모두 옮겼으므로 빈 칸으로 만들어 줌
         white_board[row][col] = []
 
@@ -96,17 +95,17 @@ def next_horse(row, col, d):
 
 
 # 현재 턴에 모든 말들 이동시키는 함수
-def move_all_horses():
-    for horse in range(K):
-        r, c, direction = info[horse]
+def move_horses():
+    for h in range(K):
+        row, col, d = info[h]
         # 말이 가장 밑이 아니면 다음 말로 넘어감
-        if not check_horse_pos(horse, r, c):
+        if not check_horse_pos(h, row, col):
             continue
 
         # 현재 말 기준으로 옮기기 수행
-        nx, ny, n_dir = next_horse(r, c, direction)
+        nx, ny, nd = next_horse(row, col, d)
         # 현재 말 정보 갱신
-        info[horse] = [nx, ny, n_dir]
+        info[h] = [nx, ny, nd]
 
 
 # 게임이 끝날 수 있는지 확인하는 함수
@@ -122,7 +121,7 @@ def is_finish():
 answer = -1
 time = 1
 while time <= 1000:
-    move_all_horses()
+    move_horses()
     if is_finish():
         answer = time
         break
