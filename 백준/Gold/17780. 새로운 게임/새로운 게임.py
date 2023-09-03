@@ -55,17 +55,17 @@ def check_blue_again(row, col, d):
 
 
 # 다음 칸으로 이동시키는 함수
-def next_horse(row, col, direction):
-    nx = row + dx[direction]
-    ny = col + dy[direction]
+def next_horse(row, col, d):
+    nx = row + dx[d]
+    ny = col + dy[d]
 
     # 다음 칸이 판을 벗어나는 경우 or 파란칸
     if nx < 0 or ny < 0 or nx >= N or ny >= N or board[nx][ny] == 2:
         # 또 벗어나거나 파란칸이면 이동 안하고 방향만 반대로
-        if check_blue_again(row, col, direction):
-            return row, col, reverse_d(direction)
+        if check_blue_again(row, col, d):
+            return row, col, reverse_d(d)
         else:
-            rev_d = reverse_d(direction)
+            rev_d = reverse_d(d)
             # 방향 바꿔서 이동한 칸의 색깔 별로 다시 처리해주기 위해 현재 함수 재귀 호출
             return next_horse(row, col, rev_d)
 
@@ -77,8 +77,8 @@ def next_horse(row, col, direction):
         for horse in rev_horses:
             white_board[nx][ny].append(horse)
             # 말들 정보 갱신
-            row, col, d = info[horse]
-            info[horse] = [nx, ny, d]
+            row, col, h_d = info[horse]
+            info[horse] = [nx, ny, h_d]
         # 이전 칸에 있던 말을 모두 옮겼으므로 빈 칸으로 만들어 줌
         white_board[row][col] = []
     # 다음 칸이 흰칸
@@ -87,12 +87,12 @@ def next_horse(row, col, direction):
         for value in white_board[row][col]:
             white_board[nx][ny].append(value)
             # 말들 정보 갱신
-            row, col, d = info[value]
-            info[value] = [nx, ny, d]
+            row, col, h_d = info[value]
+            info[value] = [nx, ny, h_d]
         # 이전 칸에 있던 말을 모두 옮겼으므로 빈 칸으로 만들어 줌
         white_board[row][col] = []
 
-    return nx, ny, direction
+    return nx, ny, d
 
 
 # 현재 턴에 모든 말들 이동시키는 함수
